@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontend Code Quality and Optimization Demos</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --text: #182230;
+      --muted: #4a5a70;
+      --bad: #c62f4a;
+      --bad-bg: #fff1f3;
+      --good: #127a45;
+      --good-bg: #edfff4;
+      --border: #d7e0ea;
+      --shadow: 0 10px 24px rgba(16, 33, 52, 0.08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 5%, #dff4ff 0%, transparent 35%),
+        radial-gradient(circle at 92% 2%, #ffe9dd 0%, transparent 33%),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+      letter-spacing: 0.01em;
+    }
+
+    .subtitle {
+      margin-top: 0.6rem;
+      color: var(--muted);
+      max-width: 72ch;
+    }
+
+    .topic {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-top: 1.25rem;
+      overflow: hidden;
+    }
+
+    .topic h2 {
+      margin: 0;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.1rem;
+      background: #f8fbff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .panel {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .panel:first-child {
+      border-top: 0;
+    }
+
+    .panel.bad {
+      background: var(--bad-bg);
+    }
+
+    .panel.good {
+      background: var(--good-bg);
+    }
+
+    .label {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .bad .label {
+      color: var(--bad);
+      background: #ffe0e5;
+    }
+
+    .good .label {
+      color: var(--good);
+      background: #dafae7;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      background: #0f1720;
+      color: #e9f0f7;
+      border-radius: 10px;
+      padding: 0.8rem;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.42;
+    }
+
+    .footnote {
+      margin-top: 1.25rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (min-width: 880px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .panel {
+        border-top: 0;
+      }
+
+      .panel + .panel {
+        border-left: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Frontend Code Quality and Optimization</h1>
+      <p class="subtitle">
+        Teaching examples for HTML, CSS, and JavaScript. Each section compares a BAD implementation
+        with a GOOD fixed variant that improves maintainability, accessibility, and performance.
+      </p>
+    </header>
+
+    <section class="topic">
+      <h2>HTML</h2>
+      <div class="grid">
+        <article class="panel bad">
+          <span class="label">Bad</span>
+          <pre><code>&lt;div style="font-size:24px;"&gt;Product&lt;/div&gt;
+&lt;img src="/assets/phone.jpg"&gt;
+&lt;input type="text" placeholder="name"&gt;
+&lt;button&gt;Click&lt;/button&gt;</code></pre>
+        </article>
+        <article class="panel good">
+          <span class="label">Good (Fixed)</span>
+          <pre><code>&lt;article&gt;
+  &lt;h3&gt;Phone X&lt;/h3&gt;
+  &lt;img src="/assets/phone.jpg" alt="Phone X in black color"&gt;
+  &lt;label for="customer-name"&gt;Your name&lt;/label&gt;
+  &lt;input id="customer-name" name="customerName" autocomplete="name"&gt;
+  &lt;button type="submit"&gt;Add to cart&lt;/button&gt;
+&lt;/article&gt;</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="topic">
+      <h2>CSS</h2>
+      <div class="grid">
+        <article class="panel bad">
+          <span class="label">Bad</span>
+          <pre><code>#page .box1 { color:#fff; background:blue; padding:13px; }
+#page .box2 { color:#fff; background:blue; padding:13px; }
+#page .box3 { color:#fff !important; background:blue; padding:13px; }</code></pre>
+        </article>
+        <article class="panel good">
+          <span class="label">Good (Fixed)</span>
+          <pre><code>:root {
+  --color-text-inverse:#fff;
+  --color-primary:#1d4ed8;
+  --space-md:0.75rem;
+}
+.card {
+  color:var(--color-text-inverse);
+  background:var(--color-primary);
+  padding:var(--space-md);
+}</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="topic">
+      <h2>JavaScript</h2>
+      <div class="grid">
+        <article class="panel bad">
+          <span class="label">Bad</span>
+          <pre><code>// 1) Naming + var usage
+function doIt(a) {
+  for (var i = 0; i &lt; a.length; i++) console.log(a[i].n);
+}
+
+// 2) Repeated DOM queries in loops
+for (let i = 0; i &lt; items.length; i++) {
+  document.getElementById('result').innerHTML += '&lt;li&gt;' + items[i].name + '&lt;/li&gt;';
+}
+
+// 3) Unsafe injection
+document.getElementById('welcome').innerHTML = '&lt;p&gt;Welcome ' + userInput + '&lt;/p&gt;';
+
+// 4) Unnecessary polling
+setInterval(() =&gt; console.log('Checking status...'), 1000);
+
+// 5) Missing async error handling
+const response = await fetch('/api/users');
+const users = await response.json();
+
+// 6) Mutating function arguments
+prices.sort((a, b) =&gt; a - b);
+
+// 7) Duplicated business logic in multiple places
+if (item.vip) total += item.price * 0.8;
+else total += item.price * 0.9;</code></pre>
+        </article>
+        <article class="panel good">
+          <span class="label">Good (Fixed)</span>
+          <pre><code>// 1) Naming + block scoping
+function logUserNames(users) {
+  for (let index = 0; index &lt; users.length; index++) console.log(users[index].name);
+}
+
+// 2) One lookup + fragment rendering
+const list = document.getElementById('result');
+const fragment = document.createDocumentFragment();
+items.forEach((item) =&gt; {
+  const li = document.createElement('li'); li.textContent = item.name; fragment.appendChild(li);
+});
+list.appendChild(fragment);
+
+// 3) Safe text rendering
+paragraph.textContent = `Welcome ${userInput}`;
+
+// 4) Controlled interval + cleanup
+const intervalId = setInterval(checkStatus, 5000);
+setTimeout(() =&gt; clearInterval(intervalId), 30000);
+
+// 5) Async with try/catch + response.ok
+if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+
+// 6) Immutable sorting
+const sorted = [...prices].sort((a, b) =&gt; a - b);
+
+// 7) Reusable helper
+const discounted = item.vip ? item.price * 0.8 : item.price * 0.9;</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="topic">
+      <h2>JavaScript Optimization</h2>
+      <div class="grid">
+        <article class="panel bad">
+          <span class="label">Bad</span>
+          <pre><code>// 1) DOM updates inside loop
+for (let i = 0; i &lt; products.length; i++) {
+  list.innerHTML += "&lt;li&gt;" + products[i].title + "&lt;/li&gt;";
+}
+
+// 2) Expensive filter on every keypress
+items.filter((item) =&gt; item.name.toLowerCase().includes(query.toLowerCase()));
+
+// 3) Duplicate API call (same id)
+await fetch("/api/users/" + userId);
+
+// 4) Listener per row button
+document.querySelectorAll(".row button").forEach((button) =&gt; { ... });
+
+// 5) Recalculate same cart total repeatedly
+items.reduce((sum, item) =&gt; sum + item.price * item.quantity, 0);
+
+// 6) Read/write layout in same loop
+const w = card.offsetWidth; card.style.height = String(w * 0.6) + "px";
+
+// 7) Long blocking loop
+for (let i = 0; i &lt; items.length; i++) out.push(items[i] * 2);</code></pre>
+        </article>
+        <article class="panel good">
+          <span class="label">Good (Fixed)</span>
+          <pre><code>// 1) Build once, update once
+const html = products.map((p) =&gt; "&lt;li&gt;" + p.title + "&lt;/li&gt;").join("");
+list.innerHTML = html;
+
+// 2) Debounce expensive operation
+const searchGood = debounce((items, query, onResult) =&gt; { ... }, 250);
+
+// 3) Cache requests by id
+if (userRequestCache.has(userId)) return userRequestCache.get(userId);
+
+// 4) Event delegation
+container.addEventListener("click", (event) =&gt; { ... });
+
+// 5) Memoize totals with stable key
+if (cartTotalCache.has(cacheKey)) return cartTotalCache.get(cacheKey);
+
+// 6) Batch reads then writes
+const widths = cards.map((card) =&gt; card.offsetWidth);
+cards.forEach((card, i) =&gt; { card.style.height = String(widths[i] * 0.6) + "px"; });
+
+// 7) Chunk heavy work
+setTimeout(runChunk, 0);</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="topic">
+      <h2>JavaScript Arrays</h2>
+      <div class="grid">
+        <article class="panel bad">
+          <span class="label">Bad</span>
+          <pre><code>// 1) Mutates original array
+scores.sort((a, b) =&gt; a - b);
+
+// 2) map() used for side effects
+users.map((u) =&gt; console.log(u.name));
+
+// 3) Nested loops (O(n^2))
+for (let i = 0; i &lt; users.length; i++) {
+  for (let j = 0; j &lt; profiles.length; j++) { ... }
+}
+
+// 4) reduce without initial value
+items.reduce((sum, item) =&gt; sum + item.price);
+
+// 5) Multiple passes
+users.filter(...).map(...).reduce(...);
+
+// 6) Loose equality
+ids.some((id) =&gt; id == targetId);</code></pre>
+        </article>
+        <article class="panel good">
+          <span class="label">Good (Fixed)</span>
+          <pre><code>// 1) Immutable sort
+[...scores].sort((a, b) =&gt; a - b);
+
+// 2) forEach for side effects
+users.forEach((u) =&gt; console.log(u.name));
+
+// 3) Map index for O(1) lookup
+const profileByUserId = new Map(profiles.map((p) =&gt; [p.userId, p]));
+
+// 4) Safe reduce initialization
+items.reduce((sum, item) =&gt; sum + item.price, 0);
+
+// 5) Single-pass reduce
+users.reduce((sum, user) =&gt; user.vip ? sum + user.points : sum, 0);
+
+// 6) Strict equality
+ids.some((id) =&gt; id === targetId);</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="topic">
+      <h2>JavaScript Objects</h2>
+      <div class="grid">
+        <article class="panel bad">
+          <span class="label">Bad</span>
+          <pre><code>// 1) Mutates shared object
+user.name = newName;
+
+// 2) Unsafe deep access
+return user.profile.address.city;
+
+// 3) for...in without own check
+for (const key in source) { result[key] = source[key]; }
+
+// 4) Plain object used as hash map
+counts[word] = (counts[word] || 0) + 1;
+
+// 5) Blind merge
+{ ...target, ...patch }
+
+// 6) Loose key check pattern
+Object.keys(obj).includes(field);</code></pre>
+        </article>
+        <article class="panel good">
+          <span class="label">Good (Fixed)</span>
+          <pre><code>// 1) Immutable object update
+{ ...user, name: newName }
+
+// 2) Optional chaining + fallback
+user.profile?.address?.city ?? "Unknown city"
+
+// 3) Own enumerable entries only
+Object.fromEntries(Object.entries(source))
+
+// 4) Use Map for dynamic keys
+counts.set(word, (counts.get(word) ?? 0) + 1);
+
+// 5) Safe merge (ignore undefined)
+Object.fromEntries(Object.entries(patch).filter(([, v]) =&gt; v !== undefined))
+
+// 6) Fast own-property check
+Object.hasOwn(obj, field);</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <p class="footnote">
+      Related source files in this workspace: <code>html-quality-demo.html</code>, <code>css-quality-demo.css</code>, <code>js-quality-demo.js</code>, <code>js-optimization-demo.js</code>, <code>js-array-practices-demo.js</code>, and <code>js-object-practices-demo.js</code>.
+    </p>
+  </main>
+</body>
+</html>

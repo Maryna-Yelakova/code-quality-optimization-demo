@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Quality Demo</title>
+</head>
+<body>
+  <h1>HTML Code Quality Demo</h1>
+
+  <!-- BAD EXAMPLE -->
+  <section>
+    <h2>BAD Example</h2>
+    <!-- Problems:
+      - Non-semantic structure (div soup)
+      - Missing alt text
+      - Inline styles
+      - Poor accessibility (no labels)
+      - Generic button text
+    -->
+    <div style="border:1px solid #999; padding: 10px; margin-bottom: 16px;">
+      <div style="font-size: 24px; font-weight: bold;">Product Page</div>
+      <div>
+        <img src="/assets/phone.jpg">
+      </div>
+      <div>Phone X</div>
+      <div>$999</div>
+      <div>
+        <input type="text" placeholder="name">
+      </div>
+      <div>
+        <button>Click</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOOD EXAMPLE -->
+  <section>
+    <h2>GOOD Example (Fixed)</h2>
+    <!-- Improvements:
+      - Semantic tags: article, header, figure, form
+      - Accessible image alt
+      - Associated label + input id
+      - Meaningful button text
+      - No inline style clutter
+    -->
+    <article class="product-card">
+      <header>
+        <h3>Phone X</h3>
+      </header>
+
+      <figure>
+        <img src="/assets/phone.jpg" alt="Phone X in black color" width="220" height="220" />
+        <figcaption>Latest model with improved battery life.</figcaption>
+      </figure>
+
+      <p><strong>Price:</strong> $999</p>
+
+      <form>
+        <label for="customer-name">Your name</label>
+        <input id="customer-name" name="customerName" type="text" autocomplete="name" />
+        <button type="submit">Add to cart</button>
+      </form>
+    </article>
+  </section>
+</body>
+</html>

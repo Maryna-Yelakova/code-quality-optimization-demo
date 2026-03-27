@@ -1,0 +1,62 @@
+/* CSS Code Quality Demo */
+
+/* BAD EXAMPLE */
+/* Problems:
+  - Repeated values
+  - Overly specific selectors
+  - Hard-to-read naming
+  - Magic numbers
+  - !important misuse
+*/
+
+#page .box1 {
+  color: #ffffff;
+  background: blue;
+  padding: 13px;
+  margin-top: 7px;
+  border-radius: 2px;
+}
+
+#page .box2 {
+  color: #ffffff;
+  background: blue;
+  padding: 13px;
+  margin-top: 7px;
+  border-radius: 2px;
+}
+
+#page .box3 {
+  color: #ffffff !important;
+  background: blue;
+  padding: 13px;
+  margin-top: 7px;
+  border-radius: 2px;
+}
+
+/* GOOD EXAMPLE (Fixed) */
+/* Improvements:
+  - CSS variables for consistency
+  - Reusable utility/component classes
+  - Lower specificity
+  - Meaningful naming
+*/
+
+:root {
+  --color-text-inverse: #ffffff;
+  --color-primary: #1d4ed8;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --radius-sm: 0.25rem;
+}
+
+.card {
+  color: var(--color-text-inverse);
+  background-color: var(--color-primary);
+  padding: var(--space-md);
+  margin-top: var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.card--emphasis {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
